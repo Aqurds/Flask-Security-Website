@@ -1,0 +1,88 @@
+{% extends 'base-template.html'%}
+
+{% block content %}
+
+			<!-- start banner Area -->
+			<section class="banner-area relative" id="home">
+				<div class="overlay overlay-bg"></div>
+				<div class="container">
+					<div class="row d-flex align-items-center justify-content-center">
+						<div class="about-content col-lg-12">
+							<h1 class="text-white">
+								Login
+							</h1>
+							<p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('signin')}}"> Login </a></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->
+
+			{% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages%}
+              <div class="alert alert-{{category}}">
+                {{message}}
+              </div>
+            {% endfor %}
+          {% endif%}
+        {% endwith %}
+
+			<!-- Start contact-page Area -->
+			<section class="contact-page-area section-gap">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<form class="form-area" action="" method="post" class="contact-form text-right">
+								{{form.hidden_tag()}}
+									<fieldset>
+
+										<div class="form-group">
+											{{ form.email.label(class="form-control-label")}}
+											{% if form.email.errors %}
+												<div class="mt-20 alert-msg" style="text-align: left;">
+													{% for error in form.email.errors %}
+														<span>{{ error }}</span>
+													{% endfor%}
+												</div>
+												{{form.email(class='common-input mb-20 form-control')}}
+											{% else %}
+												{{form.email(class='common-input mb-20 form-control')}}
+											{% endif %}
+										</div>
+
+
+
+										<div class="form-group">
+											{{ form.password.label(class="form-control-label")}}
+											{% if form.password.errors %}
+												<div class="mt-20 alert-msg" style="text-align: left;">
+													{% for error in form.password.errors %}
+														<span>{{ error }}</span>
+													{% endfor%}
+												</div>
+											{% else %}
+												{{form.password(class='common-input mb-20 form-control')}}
+											{% endif %}
+										</div>
+
+
+
+										<div class="form-group">
+											{{ form.submit(class="btn btn-outline-info primary-btn mt-20 text-white custom-button-style") }}
+										</div>
+										</fieldset>
+
+							</form>
+
+{% print(getto) %}
+              <div class="col-lg-12" style="text-align:center;">
+                <p>Forgot Password? <a href="{{url_for('password_reset')}}">Reset here</a> </p>
+              </div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End contact-page Area -->
+
+{% endblock content %}

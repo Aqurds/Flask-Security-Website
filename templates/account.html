@@ -1,0 +1,29 @@
+{% extends 'base-template.html'%}
+{% block content %}
+
+
+			<!-- start banner Area -->
+			<section class="banner-area relative" id="home">
+				<div class="overlay overlay-bg"></div>
+				<div class="container">
+					<div class="row d-flex align-items-center justify-content-center">
+						<div class="about-content col-lg-12">
+							<h1 class="text-white">
+								My Account
+							</h1>
+							<p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('account')}}"> My Account</a></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Welcome {{ current_user.username }}</p>
+        </div>
+      </div>
+    </div>
+
+
+{% endblock content %}

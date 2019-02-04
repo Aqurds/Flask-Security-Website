@@ -1,0 +1,100 @@
+{% extends 'base-template.html'%}
+
+{% block content %}
+
+			<!-- start banner Area -->
+			<section class="banner-area relative" id="home">
+				<div class="overlay overlay-bg"></div>
+				<div class="container">
+					<div class="row d-flex align-items-center justify-content-center">
+						<div class="about-content col-lg-12">
+							<h1 class="text-white">
+								{{title}}
+							</h1>
+							<p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('register')}}"> Register </a></p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->
+
+			<!-- Start contact-page Area -->
+			<section class="contact-page-area section-gap">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<form class="form-area " action="" method="post" class="contact-form text-right">
+								{{form.hidden_tag()}}
+										<fieldset>
+
+											<div class="form-group">
+												{{ form.username.label(class="form-control-label")}}
+												{% if form.username.errors %}
+													<div class="mt-20 alert-msg" style="text-align: left;">
+														{% for error in form.username.errors %}
+				                      <span>{{ error }}</span>
+				                    {% endfor%}
+													</div>
+													{{form.username(class='common-input mb-20 form-control is-invalid')}}
+												{% else %}
+													{{form.username(class='common-input mb-20 form-control')}}
+												{% endif %}
+											</div>
+
+											<div class="form-group">
+												{{ form.email.label(class="form-control-label")}}
+												{% if form.email.errors %}
+													<div class="mt-20 alert-msg" style="text-align: left;">
+														{% for error in form.email.errors %}
+				                      <span>{{ error }}</span>
+				                    {% endfor%}
+													</div>
+													{{form.email(class='common-input mb-20 form-control is-invalid')}}
+												{% else %}
+													{{form.email(class='common-input mb-20 form-control')}}
+												{% endif %}
+											</div>
+
+
+											<div class="form-group">
+												{{ form.password.label(class="form-control-label")}}
+												{% if form.password.errors %}
+													<div class="mt-20 alert-msg" style="text-align: left;">
+														{% for error in form.password.errors %}
+				                      <span>{{ error }}</span>
+				                    {% endfor%}
+													</div>
+												{% else %}
+													{{form.password(class='common-input mb-20 form-control')}}
+												{% endif %}
+											</div>
+
+
+											<div class="form-group">
+												{{ form.confirm_password.label(class="form-control-label")}}
+												{% if form.confirm_password.errors %}
+													<div class="mt-20 alert-msg" style="text-align: left;">
+														{% for error in form.confirm_password.errors %}
+				                      <span>{{ error }}</span>
+				                    {% endfor%}
+													</div>
+												{% else %}
+													{{form.confirm_password(class='common-input mb-20 form-control')}}
+												{% endif %}
+											</div>
+
+											<div class="form-group">
+												{{ form.submit(class="btn btn-outline-info primary-btn mt-20 text-white custom-button-style") }}
+											</div>
+										</fieldset>
+							</form>
+              <div class="col-lg-12" style="text-align:center;">
+                <p>Already have an account? <a href="{{url_for('signin')}}">Login here</a> </p>
+              </div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- End contact-page Area -->
+
+{% endblock content %}
