@@ -1,4 +1,6 @@
 import os
+import secrets
+from PIL import Image
 from flask import Flask, render_template, url_for, flash, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -9,6 +11,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms.widgets import TextArea
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 
 
@@ -116,9 +119,32 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
+
+class UpdateAccountForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update')
+
+    def validate_username(self, username):
+        if username.data != current_user.username:
+            user = User.query.filter_by(username=username.data).first()
+            if user:
+                raise ValidationError('That username is taken, please choose a different one')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            email = User.query.filter_by(email=email.data).first()
+            if email:
+                raise ValidationError('That email is taken. Please choose different one')
+
+
+
+
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
+    # content = TextAreaField('Content', validators=[DataRequired()])
+    content = StringField('Content', validators=[DataRequired()], widget=TextArea())
     submit = SubmitField('Post')
 
 
@@ -176,9 +202,10 @@ def price():
 def blog():
     return render_template('blog-home.html')
 
-@app.route('/blog-single/')
-def blogsingle():
-    return render_template('blog-single.html')
+@app.route('/blog-single/<int:post_id>')
+def blogsingle(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('blog-single.html', post=post)
 
 @app.route('/contact/')
 def contact():
@@ -217,7 +244,7 @@ def signin():
                 return redirect(url_for('admin'))
             else:
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('home'))
+                return redirect(next_page) if next_page else redirect(url_for('account'))
         else:
             flash('Login Failled. Please check email and password', 'danger')
     return render_template('signin.html', title='Sign In', form = login_form)
@@ -235,17 +262,58 @@ def signout():
     return redirect(url_for('home'))
 
 
-@app.route('/account/')
+
+def save_pic(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_text = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_text
+    picture_path = os.path.join(app.root_path, 'static/img', picture_fn)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    #form_picture.save(picture_path)
+    return picture_fn
+
+
+
+@app.route('/account/', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html')
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_pic(form.picture.data)
+            current_user.image_file = picture_file
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for('static', filename='image/' + current_user.image_file)
+    return render_template('account.html', title='Sign In', image = image_file, form=form)
 
 
-@app.route('/admin/')
+@app.route('/admin/', methods=['GET', 'POST'])
 @login_required
 def admin():
+    all_users = User.query.all()
+    getto = len(all_users)
+    posts = Post.query.all()
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash(f'Your post has been created!', 'success')
+        # return redirect(url_for('admin'))
     if current_user.email == "admin@yourdomainname.com":
-        return render_template('admin.html')
+        return render_template('admin.html', all_users=all_users, form=form, legend="Create New Post", getto=getto, posts=posts)
     return render_template('account.html')
 
 

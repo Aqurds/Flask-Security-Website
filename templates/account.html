@@ -17,10 +17,105 @@
 				</div>
 			</section>
 			<!-- End banner Area -->
-    <div class="container">
+
+      <div class="container">
+        <div class="row">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages%}
+                  <div class="alert alert-{{category}}" style="margin:0 auto;">
+                    {{message}}
+                  </div>
+                {% endfor %}
+              {% endif%}
+            {% endwith %}
+        </div>
+      </div>
+
+
+
+    <div class="container" style="margin-top:100px; margin-bottom:100px;">
       <div class="row">
-        <div class="col-lg-12">
-          <p>Welcome {{ current_user.username }}</p>
+        <div class="col-4">
+          <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Subscription</a>
+            <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile</a>
+            <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+              You don't have any active subscription now.
+              <p>Subscribe <a href="{{url_for('price')}}">here</a> </p>
+            </div>
+            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+              <ul class="list-group">
+                  <li class="list-group-item">User name: {{current_user.username}}</li>
+                  <li class="list-group-item">User email: {{current_user.email}}</li>
+                  <li class="list-group-item">Active subscription: None</li>
+                  <li class="list-group-item">User image: <img src="{{ url_for('static', filename='img/' + current_user.image_file) }}" width=100px height=100px alt=""> </li>
+              </ul>
+            </div>
+            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+
+                    <form class="" action="" method="post" enctype="multipart/form-data">
+                      {{form.hidden_tag()}}
+                      <fieldset>
+                        <legend>Update Account</legend>
+
+
+                        <div class="form-group">
+                          {{form.username.label(class="form-control-label")}}
+
+                          {% if form.username.errors %}
+                            {{form.username(class="common-input mb-20 form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                              {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                              {% endfor%}
+                            </div>
+                          {% else %}
+                            {{form.username(class="common-input mb-20 form-control")}}
+                          {% endif %}
+                        </div>
+
+
+                        <div class="form-group">
+                          {{form.email.label(class="form-control-label")}}
+                          {% if form.email.errors %}
+                            {{form.email(class="common-input mb-20 form-control is-invalid")}}
+                            <div class="invalid-feedback">
+                              {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                              {% endfor%}
+                            </div>
+                          {% else %}
+                            {{form.email(class="common-input mb-20 form-control")}}
+                          {% endif %}
+                        </div>
+
+
+                        <div class="form-group">
+                          {{ form.picture.label() }}
+                          {{ form.picture(class="form-control-file")}}
+                          {% if form.picture.errors %}
+                          {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                          {% endfor%}
+                          {% endif %}
+                        </div>
+
+
+                      </fieldset>
+
+                      <div class="form-group">
+                        {{form.submit(class="btn btn-outline-info primary-btn mt-20 text-white custom-button-style")}}
+                      </div>
+                    </form>
+
+            </div>
+          </div>
         </div>
       </div>
     </div>

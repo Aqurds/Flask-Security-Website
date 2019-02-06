@@ -11,12 +11,21 @@
                             <h1 class="text-white">
                                 Blog Single
                             </h1>
-                            <p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('blogsingle')}}"> Blog Single</a></p>
+                            <p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('blogsingle', post_id=post.id)}}"> Blog Single</a></p>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- End banner Area -->
+
+
+            <div class="container">
+              <div class="row">
+                <h3>{{post.title}}</h3>
+                <p>{{post.content}}</p>
+              </div>
+            </div>
+
 
 			<!-- Start blog-posts Area -->
 			<section class="blog-posts-area section-gap">
@@ -280,7 +289,7 @@
                                             <img class="img-fluid" src="../static/img/blog/r1.jpg" alt="">
                                         </div>
                                         <div class="recent-details">
-                                            <a href="{{url_for('blogsingle')}}">
+                                            <a href="#">
                                                 <h4>
                                                     Home Audio Recording
                                                     For Everyone
@@ -296,7 +305,7 @@
                                             <img class="img-fluid" src="../static/img/blog/r2.jpg" alt="">
                                         </div>
                                         <div class="recent-details">
-                                            <a href="{{url_for('blogsingle')}}">
+                                            <a href="#">
                                                 <h4>
                                                     Home Audio Recording
                                                     For Everyone
@@ -312,7 +321,7 @@
                                             <img class="img-fluid" src="../static/img/blog/r3.jpg" alt="">
                                         </div>
                                         <div class="recent-details">
-                                            <a href="{{url_for('blogsingle')}}">
+                                            <a href="#">
                                                 <h4>
                                                     Home Audio Recording
                                                     For Everyone
@@ -328,7 +337,7 @@
                                             <img class="img-fluid" src="../static/img/blog/r4.jpg" alt="">
                                         </div>
                                         <div class="recent-details">
-                                            <a href="{{url_for('blogsingle')}}">
+                                            <a href="#">
                                                 <h4>
                                                     Home Audio Recording
                                                     For Everyone

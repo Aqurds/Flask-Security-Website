@@ -51,7 +51,7 @@
                           <li><a href="{{url_for('admin')}}">Admin Dashboard</a></li>
                           <li><a href="{{url_for('signout')}}">Logout</a></li>
                     {% else %}
-                          <li><a href="{{url_for('account')}}">My Account</a></li>
+                          <li><a href="{{url_for('account')}}">{{current_user.username}}</a></li>
                           <li><a href="{{url_for('signout')}}">Logout</a></li>
                     {% endif %}
                 {% else %}
@@ -78,12 +78,6 @@
                 <li><a href="{{url_for('price')}}">Price</a></li>
                 <li><a href="{{url_for('blog')}}">Blog</a></li>
                 <li><a href="{{url_for('contact')}}">Contact</a></li>
-                <li class="menu-has-children"><a href="">Pages</a>
-                  <ul>
-                    <li><a href="{{url_for('blogsingle')}}">blog Single</a></li>
-                    <li><a href="{{url_for('elements')}}">Elements</a></li>
-                  </ul>
-                </li>
               </ul>
             </nav><!-- #nav-menu-container -->
           </div>
@@ -106,8 +100,8 @@
               </p>
               <p class="footer-text">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Design by Colorlib. Backend code by <a href="https://aqurds.github.io/" target="_blank">Aqurds.Github.io</a>
+
               </p>
             </div>
           </div>

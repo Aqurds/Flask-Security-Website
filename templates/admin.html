@@ -1,10 +1,137 @@
 {% extends 'base-template.html'%}
 {% block content %}
 
+<!-- start banner Area -->
+<section class="banner-area relative" id="home">
+  <div class="overlay overlay-bg"></div>
+  <div class="container">
+    <div class="row d-flex align-items-center justify-content-center">
+      <div class="about-content col-lg-12">
+        <h1 class="text-white">
+          Admin Dashboard
+        </h1>
+        <p class="text-white link-nav"><a href="{{url_for('home')}}">Home </a>  <span class="lnr lnr-arrow-right"></span>  <a href="{{url_for('admin')}}"> Admin</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End banner Area -->
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages%}
+        <div class="alert alert-{{category}}" style="margin:0 auto;">
+          {{message}}
+        </div>
+      {% endfor %}
+    {% endif%}
+  {% endwith %}
 
 
+<div class="container" style="margin-top:100px; margin-bottom:100px;">
 
+  <div class="row">
+    <div class="col-4">
+      <div class="list-group" id="list-tab" role="tablist">
+        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Subscribers</a>
+        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Users Account</a>
+        <a class="list-group-item list-group-item-action" id="list-blog-list" data-toggle="list" href="#list-blog" role="tab" aria-controls="blog">All Blog Post</a>
+        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Create New Post</a>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+          No active subscribers now!
+          Try Hard on Marketing!
+        </div>
+        <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 
+            <div class="">
+              <p>Total Users: {{getto}}</p>
+            </div>
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">User Id</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">User Email</th>
+                    <th scope="col">User Image</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in all_users %}
+                    <tr>
+                      <th scope="row">{{user.id}}</th>
+                      <td>{{user.username}}</td>
+                      <td>{{user.email}}</td>
+                      <td><img src="{{ url_for('static', filename='img/' + user.image_file) }}" width=50px height=50px alt=""></td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+
+        </div>
+        <div class="tab-pane fade" id="list-blog" role="tabpanel" aria-labelledby="list-blog-list">
+          {% for post in posts %}
+            <div class="single-post">
+              <a href="{{url_for('blogsingle', post_id=post.id)}}">
+                <h1>
+                  {{post.title}}
+                </h1>
+              </a>
+              <p>Posted by: {{post.author.username}} at {{post.date_posted.strftime('%Y-%m-%d')}}</p>
+              <p>
+                {{post.content}}
+              </p>
+            </div>
+
+          {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+
+          <form class="" action="" method="post">
+              {{form.hidden_tag()}}
+              <fieldset>
+                <legend>{{ legend }}</legend>
+                <div class="form-group">
+                  {{form.title.label(class="form-control-label")}}
+                  {% if form.title.errors %}
+                    {{form.title(class="common-input mb-20 form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                      {% for error in form.title.errors %}
+                        <span>{{ error }}</span>
+                      {% endfor%}
+                    </div>
+                  {% else %}
+                    {{form.title(class="common-input mb-20 form-control")}}
+                  {% endif %}
+                </div>
+                <div class="form-group">
+                  {{form.content.label(class="form-control-label")}}
+                  {% if form.content.errors %}
+                    {{form.content(cols="35", rows="20", class="common-input mb-20 form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                      {% for error in form.content.errors %}
+                        <span>{{ error }}</span>
+                      {% endfor%}
+                    </div>
+                  {% else %}
+                    {{form.content(cols="35", rows="10", class="common-input mb-20 form-control")}}
+                  {% endif %}
+                </div>
+              </fieldset>
+              <div class="form-group">
+                {{form.submit(class="btn btn-outline-info primary-btn mt-20")}}
+              </div>
+            </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
