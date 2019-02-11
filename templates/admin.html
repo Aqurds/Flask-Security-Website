@@ -82,6 +82,7 @@
                 </h1>
               </a>
               <p>Posted by: {{post.author.username}} at {{post.date_posted.strftime('%Y-%m-%d')}}</p>
+              <!--<img class="img-fluid" src="url_for('static', filename='/img/' + post.post_picture)" alt="">-->
               <p>
                 {{post.content}}
               </p>
@@ -146,6 +147,7 @@
                     {{form.content(cols="35", rows="10", class="common-input mb-20 form-control")}}
                   {% endif %}
                 </div>
+              
               </fieldset>
               <div class="form-group">
                 {{form.submit(class="btn btn-outline-info primary-btn mt-20")}}

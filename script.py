@@ -77,7 +77,9 @@ class Post(db.Model):
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
+    # post_image= db.Column(db.String(20), nullable=False, default='post_default.jpg')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -145,6 +147,7 @@ class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     # content = TextAreaField('Content', validators=[DataRequired()])
     content = StringField('Content', validators=[DataRequired()], widget=TextArea())
+    # post_picture = FileField('Insert Image For This Blog Post', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Post')
 
 
@@ -312,6 +315,8 @@ def admin():
         db.session.commit()
         flash(f'Your post has been created!', 'success')
         # return redirect(url_for('admin'))
+        form.title.data = ""
+        form.content.data = ""
     if current_user.email == "admin@yourdomainname.com":
         return render_template('admin.html', all_users=all_users, form=form, legend="Create New Post", getto=getto, posts=posts)
     return render_template('account.html')
