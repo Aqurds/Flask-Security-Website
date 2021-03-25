@@ -41,7 +41,7 @@ pyperclip==1.7.0
 pyreadline==2.1
 python-secrets==18.11.5
 pytz==2018.9
-PyYAML==3.13
+PyYAML==5.4
 requests==2.21.0
 six==1.12.0
 snowballstemmer==1.2.1
