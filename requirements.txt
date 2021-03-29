@@ -35,7 +35,7 @@ prettytable==0.7.2
 psutil==5.5.0
 py==1.7.0
 pycparser==2.19
-Pygments==2.3.1
+Pygments==2.7.4
 pyparsing==2.3.1
 pyperclip==1.7.0
 pyreadline==2.1
