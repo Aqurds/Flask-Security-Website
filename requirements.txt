@@ -33,7 +33,7 @@ Pillow==5.4.1
 pluggy==0.8.1
 prettytable==0.7.2
 psutil==5.5.0
-py==1.7.0
+py==1.10.0
 pycparser==2.19
 Pygments==2.3.1
 pyparsing==2.3.1
